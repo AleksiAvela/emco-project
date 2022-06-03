@@ -14,16 +14,16 @@ def preprocess(data, min_df=1, min_len=1, stopwords=[], sep=None, stem=True):
 	
 	'''
 	data            : array or list of the documents
-	min_df, min_len : word is included in the vocabulary only if its frequency in data
-					  is strictly greater than min_df and its length is strictly greater 
-					  than min_len
+	min_df, min_len : a word is included in the vocabulary only if its frequency in
+			  the data is strictly greater than min_df, and if its length is
+			  strictly greater than min_len
 	stopwords       : list of stopwords to be removed from the vocabulary
 	sep             : symbol separating words; if None is given, the documents are
-					  tokenized with RegexpTokenizer(r'[a-zA-Z]+')
+			  tokenized with RegexpTokenizer(r'[a-zA-Z]+')
 	stem            : whether to (snowball) stem the words
 	---
 	returns         : list of preprocessed documents as lists of lower case tokens
-					  and dictionaries of {word : index} and {word : frequency}
+			  and dictionaries of {word : index} and {word : frequency}
 	'''
 		
 	stemmer = snowballstemmer.stemmer('english')
@@ -88,8 +88,8 @@ def data_to_sparse_bow(documents, vocabulary, tf=True, idf=True, norm='l2'):
 	corpus = [' '.join(doc) for doc in documents]
 	pipe   = Pipeline([('count', CountVectorizer(vocabulary=vocabulary)),
 					   ('tfidf', TfidfTransformer(norm=norm,
-											      use_idf=idf,     
-											      sublinear_tf=tf))]).fit(corpus)
+						     use_idf=idf,     
+						     sublinear_tf=tf))]).fit(corpus)
 	return dok_matrix(pipe.transform(corpus))
 	
 
@@ -162,4 +162,3 @@ def test(X, y, X_test, y_test, r=0.5):
 	total_cost = costs[0]*cMat[0,1] + costs[1]*cMat[1,0]
 	
 	return bAcc, TPR, TNR, total_cost
-
