@@ -5,16 +5,14 @@ from utils import preprocess
 
 
 '''
- ****************************************************************
- * Implementation of the Extrapolated Markov Chain Oversampling *
- * (EMCO) method for imbalanced text classification developed   *
- * by Avela, A. and Ilmonen, P. (2022)                          *
- *                                                              *
- * EMCO is based on an assumption that the sequential structure *
- * of text can be partly learned from the majority class. Thus, *
- * oversampling with EMCO will allow the minority feature space *
- * to expand, which helps generalizing the minority class.      *
- ****************************************************************
+ ************************************************************************************
+ * Implementation of the Extrapolated Markov Chain Oversampling (EMCO) method       *
+ * for imbalanced text classification developed by A. Avela and P. Ilmonen (2022)   *
+ *                                                                                  *
+ * EMCO is based on the assumption that the sequential structure of text can be     *
+ * partly learned from the majority class. Thus, oversampling with EMCO allows the  *
+ * minority feature space to expand, which helps generalizing the minority class.   *
+ ************************************************************************************
 '''
 
 
@@ -22,27 +20,27 @@ class ExtrapolatedMarkovChainOversampling:
 	
 	
 	def __init__(self, stopwords=[], sep=None, stem=True,
-			     singles=False, min_len=1, gamma='auto'):
+		           singles=False, min_len=1, gamma='auto'):
 		
 		'''
 		stopwords (list)  : List of stopwords to be removed from the vocabulary
 		sep       (str)   : Token separator in data, e.g. ','
-							default: None -> RegexpTokenizer is used
+				    default: None -> RegexpTokenizer is used
 		stem	  (bool)  : Whether to (Snowball) stem the words or not
 		singles   (bool)  : If False, words that appear only once in the total 
-							vocabulary are pruned off
+				    vocabulary are pruned off
 		min_len   (int)   : Words that are not longer than min_len are pruned off
-							(see preprocess.py in utils.py)
+				    (see preprocess.py in utils.py)
 		gamma	  (float) : Discounting parameter for transitions in majority documents
-							default: gamma = minority_freq
+				    default: gamma = minority_freq
 		'''
 		
 		self.stopwords = stopwords
 		self.sep       = sep
-		self.stem	   = stem
+		self.stem      = stem
 		self.singles   = singles
 		self.min_len   = min_len
-		self.gamma	   = gamma
+		self.gamma     = gamma
 		
 		
 	def __preprocess_data(self):
@@ -68,8 +66,8 @@ class ExtrapolatedMarkovChainOversampling:
 			### minority class word distribution:
 			for i, (ones, voc, other_voc) in enumerate(
 					zip([min_ones, maj_ones],
-						[min_vocabulary, maj_vocabulary],
-						[maj_vocabulary, min_vocabulary])):
+					    [min_vocabulary, maj_vocabulary],
+					    [maj_vocabulary, min_vocabulary])):
 				for token in ones:
 					if token not in other_voc:
 						del voc[token]
@@ -104,7 +102,7 @@ class ExtrapolatedMarkovChainOversampling:
 				self.maj_docs.append(clean_doc)
 		
 		self.min_vocabulary = min_vocabulary          # Minority vocabulary
-		self.vocabulary		= vocabulary              # Total vocabulary
+		self.vocabulary	    = vocabulary              # Total vocabulary
 		self.distinct_words = list(vocabulary.keys()) # List of words in vocabulary
 		
 		### Minority document length distribution
@@ -183,9 +181,9 @@ class ExtrapolatedMarkovChainOversampling:
 		Generate a synthetic document as a Markov chain based on the estimated
 		transition probability matrix P.
 		seed   : initial token in chain; if none is given, the chain will begin
-				 with a <STOP> token (that is not included in the returned chain)
+			 with a <STOP> token (that is not included in the returned chain)
 		length : length of the generated chain; if none is given, the length will
-				 be drawn from the minority document length distribution
+			 be drawn from the minority document length distribution
 		'''
 		
 		if seed not in self.distinct_words:
@@ -239,10 +237,10 @@ class ExtrapolatedMarkovChainOversampling:
 		Generates a synthetic sample using the estimated transition probabilities
 		---
 		seed   : initial token in chains; if no seed is given each chain will start
-				 from <STOP> token (which is not included in the returned documents)
+			 from <STOP> token (which is not included in the returned documents)
 		n      : sample size; if 'full' is given samples for full balance
 		length : length of the synthetic documents; if 'auto' is given draws lengths
-				 of the documents from the minority document length distribution
+			 of the documents from the minority document length distribution
 		'''
 		
 		if n == 'full':
@@ -255,4 +253,4 @@ class ExtrapolatedMarkovChainOversampling:
 			for i in range(n):
 				documents[i] = self.__chain(seed, length)
 			return documents
-		
+	
