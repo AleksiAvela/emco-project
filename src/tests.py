@@ -165,8 +165,8 @@ results_agg = []
 for df in [bacc, tpr, tnr, cost]:
 	results_agg.append(
 		pd.DataFrame({'HF'  : df.loc[df.f >= limits[0]].mean()[1:],
-					  'LF'  : df.loc[df.f < limits[0]].loc[df.f >= limits[1]].mean()[1:],
-					  'VLF' : df.loc[df.f < limits[1]].mean()[1:]}).round(3))
+			      'LF'  : df.loc[df.f < limits[0]].loc[df.f >= limits[1]].mean()[1:],
+			      'VLF' : df.loc[df.f < limits[1]].mean()[1:]}).round(3))
 
 print()
 print("\t*******************************")
@@ -174,19 +174,20 @@ print("\t*** AGGREGATED TEST RESULTS ***")
 print("\t*******************************\n")
 print("\tClass frequency limits:", str(100*limits[0])+"%,", str(100*limits[1])+"%")
 for i, s in enumerate(['Balanced Accuracy',
-					   'True Positive Rate',
-					   'True Negative Rate',
-					   'Misclassification Cost']):
+		       'True Positive Rate',
+		       'True Negative Rate',
+		       'Misclassification Cost']):
 	print("\n\t\t***", s, "***")
 	print(results_agg[i])
 	
 
-### Save the results as a json-file:
+### Save the average results per each category as a json-file:
 if save_results_as_json:
 	results_json = {'category'  : categories,
-                    'frequency' : results['minority_freq'].tolist()}
+                        'frequency' : results['minority_freq'].tolist()}
 	for stat in ['bAcc','TPR','TNR','cost']:
 		results_json[stat] = {k : v.tolist() for k, v in results[stat].items()}
 	with open(json_file, 'w') as fp:
 		json.dump(results_json, fp, indent=4)
+
 
