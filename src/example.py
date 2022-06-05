@@ -72,8 +72,8 @@ IR = sum(y_tr)/len(y_tr)
 
 method, bAcc, TPR, TNR, cost = [], [], [], [], []
 for X, y, name in zip([X_tr, Xros, Xsmote, Xada, Xdro, Xemco],
-					  [y_tr, yros, ysmote, yada, ydro, yemco],
-					  ["Original", "ROS", "SMOTE", "ADASYN", "DRO", "EMCO"]):
+		      [y_tr, yros, ysmote, yada, ydro, yemco],
+		      ["Original", "ROS", "SMOTE", "ADASYN", "DRO", "EMCO"]):
 	if name == "DRO":
 		res = test(X, y, Xdro_te, y_te, r=IR)
 	else:
@@ -86,10 +86,10 @@ for X, y, name in zip([X_tr, Xros, Xsmote, Xada, Xdro, Xemco],
 
 
 results = pd.DataFrame({'Method' : method,
-						'Bal. Acc.' : bAcc,
-						'TPR' : TPR,
-						'TNR' : TNR,
-						'Total cost' : cost})
+			'Bal. Acc.' : bAcc,
+			'TPR' : TPR,
+			'TNR' : TNR,
+			'Total cost' : cost})
 print()
 print(results)
 
