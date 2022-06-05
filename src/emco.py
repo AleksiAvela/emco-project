@@ -30,7 +30,7 @@ class ExtrapolatedMarkovChainOversampling:
 		singles   (bool)  : If False, words that appear only once in the total 
 				    vocabulary are pruned off
 		min_len   (int)   : Words that are not longer than min_len are pruned off
-				    (see preprocess.py in utils.py)
+				    (see preprocess() in utils.py)
 		gamma	  (float) : Discounting parameter for transitions in majority documents
 				    default: gamma = minority_freq
 		'''
@@ -120,7 +120,7 @@ class ExtrapolatedMarkovChainOversampling:
 			
 	def __add(self, first, second, value=1):
 		
-		### Add given value to the transition count from word first to word second
+		### Add given value to the transition count from first word to second word
 		### as well as to the row sum corresponding to the first word:
 		try:
 			self.P[self.vocabulary[first], self.vocabulary[second]] += value
@@ -213,8 +213,8 @@ class ExtrapolatedMarkovChainOversampling:
 	def fit(self, data, y, pos_class=1):
 		
 		'''
-		Preprocesses the data (by parameters given in __init__) and estimates
-		the transition probability matrix used for oversampling
+		Preprocess the data (by parameters given in __init__) and estimate
+		the transition probability matrix used in oversampling
 		---
 		data      : list of (unpreprocessed) documents
 		y         : list of (binary) labels
@@ -234,7 +234,7 @@ class ExtrapolatedMarkovChainOversampling:
 	def sample(self, seed='', n=1, length='auto'):
 		
 		'''
-		Generates a synthetic sample using the estimated transition probabilities
+		Generate a synthetic sample using the estimated transition probabilities
 		---
 		seed   : initial token in chains; if no seed is given each chain will start
 			 from <STOP> token (which is not included in the returned documents)
