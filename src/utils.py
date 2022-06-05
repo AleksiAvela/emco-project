@@ -142,7 +142,7 @@ def test(X, y, X_test, y_test, r=0.5):
 	X_test : test data
 	y_test : binary test labels
 	r      : imbalance ratio that is used for computing the misclassification costs as
-			 cost(FP) = 1 and cost(FN) = (1-r)/r. r = 0.5 corresponds to equal costs.
+		 cost(FP) = 1 and cost(FN) = (1-r)/r. r = 0.5 corresponds to equal costs.
 	---
 	Performs classification tests with the given data. SVM with a linear kernel is used
 	in classification. Returns balanced accuracy, TPR, TNR and total misclassification
@@ -162,3 +162,4 @@ def test(X, y, X_test, y_test, r=0.5):
 	total_cost = costs[0]*cMat[0,1] + costs[1]*cMat[1,0]
 	
 	return bAcc, TPR, TNR, total_cost
+
